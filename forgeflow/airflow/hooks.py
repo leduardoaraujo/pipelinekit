@@ -13,8 +13,8 @@ except ImportError:
         'Install with: pip install -e ".[airflow]"'
     )
 
-from forgeflow.pipeline.executor import PipelineExecutor
-from forgeflow.pipeline.loader import PipelineLoader
+from forgeflow.config import PipelineLoader
+from forgeflow.pipeline import PipelineExecutor
 
 logger = structlog.get_logger()
 

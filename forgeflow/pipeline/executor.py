@@ -2,12 +2,11 @@ from importlib import import_module
 
 import structlog
 
-from forgeflow.connectors import HttpConnector, RestConnector
-from forgeflow.core.connector import BaseConnector
+from forgeflow.core import Destination, Source, Transform
 from forgeflow.core.exceptions import PipelineException
-from forgeflow.core.sink import BaseSink
-from forgeflow.core.transformer import BaseTransformer
-from forgeflow.transformers import JsonNormalizer
+from forgeflow.destinations import FileSink
+from forgeflow.sources import HttpConnector, RestConnector
+from forgeflow.transforms import JsonNormalizer
 
 logger = structlog.get_logger()
 
@@ -25,7 +24,7 @@ class PipelineExecutor:
     SINKS = {
         "postgres": "PostgresSink",
         "duckdb": "DuckDBSink",
-        "file": "FileSink",
+        "file": FileSink,
     }
 
     async def execute(self, pipeline: dict) -> None:
@@ -68,7 +67,7 @@ class PipelineExecutor:
             for sink in sinks:
                 await sink.close()
 
-    def _create_connector(self, config: dict) -> BaseConnector:
+    def _create_connector(self, config: dict) -> Source:
         connector_type = config.get("type")
         if not connector_type or connector_type not in self.CONNECTORS:
             raise PipelineException(f"Unknown connector type: {connector_type}")
@@ -76,7 +75,7 @@ class PipelineExecutor:
         connector_class = self.CONNECTORS[connector_type]
         return connector_class(config.get("config", {}))
 
-    def _create_transformer(self, config: dict) -> BaseTransformer:
+    def _create_transformer(self, config: dict) -> Transform:
         transformer_type = config.get("type")
         if not transformer_type or transformer_type not in self.TRANSFORMERS:
             raise PipelineException(f"Unknown transformer type: {transformer_type}")
@@ -84,11 +83,13 @@ class PipelineExecutor:
         transformer_class = self.TRANSFORMERS[transformer_type]
         return transformer_class(config.get("config"))
 
-    def _create_sink(self, config: dict) -> BaseSink:
+    def _create_sink(self, config: dict) -> Destination:
         sink_type = config.get("type")
         if not sink_type or sink_type not in self.SINKS:
             raise PipelineException(f"Unknown sink type: {sink_type}")
 
-        sink_class_name = self.SINKS[sink_type]
-        sink_class = getattr(import_module("forgeflow.sinks"), sink_class_name)
+        sink_class_ref = self.SINKS[sink_type]
+        sink_class = sink_class_ref
+        if isinstance(sink_class_ref, str):
+            sink_class = getattr(import_module("forgeflow.destinations"), sink_class_ref)
         return sink_class(config.get("config", {}))

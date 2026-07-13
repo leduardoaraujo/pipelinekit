@@ -12,8 +12,8 @@ from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
 
-from forgeflow.pipeline.executor import PipelineExecutor
-from forgeflow.pipeline.loader import PipelineLoader
+from forgeflow.config import PipelineLoader
+from forgeflow.pipeline import PipelineExecutor
 
 logger = structlog.get_logger()
 console = Console()
@@ -268,7 +268,7 @@ def test(pipeline_name: str, config: str):
             sys.exit(1)
 
         # Test connector
-        from forgeflow.connectors import HttpConnector, RestConnector
+        from forgeflow.sources import HttpConnector, RestConnector
 
         connector_config = pipeline.get("connector", {})
         connector_type = connector_config.get("type")
