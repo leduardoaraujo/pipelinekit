@@ -1,5 +1,4 @@
-<div align="center">
-  # PipelineKit
+# PipelineKit
 
   Python library for building data pipelines.
 
