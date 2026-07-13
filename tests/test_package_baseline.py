@@ -16,14 +16,13 @@ def _dependency_available(module_name: str) -> bool:
 def test_forgeflow_package_baseline():
     import forgeflow
 
-    assert forgeflow.__version__ == "0.1.0"
+    assert forgeflow.__version__ == "0.2.0"
 
 
 def test_api_metadata_uses_forgeflow_identity():
     api_main = Path("forgeflow/api/main.py").read_text(encoding="utf-8")
 
-    assert 'title="ForgeFlow"' in api_main
-    assert '"name": "ForgeFlow"' in api_main
+    assert "from pipelinekit.api.main import *" in api_main
 
 
 def test_cli_entry_point_imports_without_optional_extras():
@@ -74,14 +73,14 @@ def test_optional_components_fail_lazily(
         (
             "forgeflow.sinks",
             "BigQuerySink",
-            "forgeflow.sinks.bigquery",
+            "pipelinekit.destinations.bigquery",
             "google",
             'BigQuerySink requires optional dependencies. Install with: pip install -e ".[bigquery]"',
         ),
         (
             "forgeflow.airflow",
             "ForgeFlowOperator",
-            "forgeflow.airflow.operators",
+            "pipelinekit.integrations.airflow.operators",
             "airflow",
             'Apache Airflow is required for this module. Install with: pip install -e ".[airflow]"',
         ),
@@ -115,13 +114,13 @@ def test_optional_dependency_guidance_only_for_missing_extra(
         (
             "forgeflow.sinks",
             "BigQuerySink",
-            "forgeflow.sinks.bigquery",
+            "pipelinekit.destinations.bigquery",
             "google.auth",
         ),
         (
             "forgeflow.airflow",
             "ForgeFlowOperator",
-            "forgeflow.airflow.operators",
+            "pipelinekit.integrations.airflow.operators",
             "pendulum",
         ),
     ],

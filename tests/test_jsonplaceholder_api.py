@@ -1,7 +1,8 @@
 """Quick test script for JSONPlaceholder API integration."""
 import asyncio
 import json
-from forgeflow.connectors.http import HttpConnector
+
+from pipelinekit.sources.http import HttpConnector
 
 
 async def test_jsonplaceholder_api():

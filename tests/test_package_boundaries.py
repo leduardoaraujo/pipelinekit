@@ -1,3 +1,5 @@
+import importlib.util
+
 import pytest
 
 from forgeflow.core import (
@@ -55,6 +57,9 @@ def test_optional_destinations_remain_lazy_without_optional_cloud_extras():
     from forgeflow.destinations import FileSink
 
     assert sinks.FileSink is FileSink
+
+    if importlib.util.find_spec("google.cloud.bigquery") is not None:
+        pytest.skip("google.cloud.bigquery is installed in this environment")
 
     with pytest.raises(ImportError, match='Install with: pip install -e "\\.\\[bigquery\\]"'):
         sinks.BigQuerySink

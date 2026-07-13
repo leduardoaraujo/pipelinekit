@@ -1,7 +1,7 @@
 import pytest
 
-from forgeflow.core.exceptions import TransformerException
-from forgeflow.transforms import JsonNormalizer
+from pipelinekit.core.exceptions import TransformerException
+from pipelinekit.transforms import JsonNormalizer
 
 
 def test_json_normalizer_basic():
