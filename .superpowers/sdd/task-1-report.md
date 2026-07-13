@@ -181,3 +181,40 @@ Result:
 ## Git note
 
 - `tests/test_package_baseline.py` matches the repository ignore pattern `test_*.py`, so it must be staged with `git add -f`.
+
+## Task 1 review follow-up
+
+Applied the requested review fixes without changing the current `forgeflow` package name or disturbing the existing baseline commit.
+
+### Reference cleanup
+
+- Updated the active FastAPI app title in `forgeflow/api/main.py` from `Data-Forge` to `ForgeFlow`.
+- Updated the root payload name in `forgeflow/api/main.py` from `Data-Forge` to `ForgeFlow`.
+- Updated the active Airflow install instruction in `examples/airflow_dag_example.py` from `pip install data-forge[airflow]` to `pip install -e ".[airflow]"`.
+
+### Optional dependency import boundary fix
+
+- Tightened `forgeflow/sinks/__init__.py` so install guidance is only raised for missing declared optional sink dependencies.
+- Tightened `forgeflow/airflow/__init__.py` so install guidance is only raised for missing Airflow itself.
+- Unrelated `ModuleNotFoundError` raised from inside an optional integration now propagates instead of being rewritten into optional-install guidance.
+
+### Added regression coverage
+
+- Extended `tests/test_package_baseline.py` to cover the current ForgeFlow API identity strings in `forgeflow/api/main.py`.
+- Added focused regression coverage proving:
+  - missing optional sink dependencies still raise install guidance
+  - missing Airflow still raises install guidance
+  - unrelated nested `ModuleNotFoundError` inside sink imports propagates
+  - unrelated nested `ModuleNotFoundError` inside Airflow imports propagates
+
+### Review fix test evidence
+
+Focused command rerun:
+
+```bash
+.\.venv\Scripts\python -m pytest tests/test_package_baseline.py tests/test_pipeline_loader.py tests/test_transformers.py -q
+```
+
+Exact result:
+
+- `21 passed in 0.44s`
