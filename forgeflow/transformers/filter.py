@@ -1,3 +1,3 @@
-from forgeflow.transforms.filter import FilterTransformer
+from pipelinekit.transforms.filter import FilterTransformer
 
 __all__ = ["FilterTransformer"]

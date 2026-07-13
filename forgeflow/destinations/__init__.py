@@ -2,19 +2,19 @@ from importlib import import_module
 
 _DESTINATION_IMPORTS = {
     "BigQuerySink": (
-        "forgeflow.destinations.bigquery",
+        "pipelinekit.destinations.bigquery",
         ".[bigquery]",
         ("google",),
     ),
-    "DuckDBSink": ("forgeflow.destinations.duckdb", ".[duckdb]", ("duckdb",)),
-    "FileSink": ("forgeflow.destinations.file", None, ()),
+    "DuckDBSink": ("pipelinekit.destinations.duckdb", ".[duckdb]", ("duckdb",)),
+    "FileSink": ("pipelinekit.destinations.file", None, ()),
     "MongoDBSink": (
-        "forgeflow.destinations.mongodb",
+        "pipelinekit.destinations.mongodb",
         ".[mongodb]",
         ("motor", "pymongo"),
     ),
-    "PostgresSink": ("forgeflow.destinations.postgres", ".[postgres]", ("psycopg",)),
-    "S3Sink": ("forgeflow.destinations.s3", ".[s3]", ("boto3", "botocore")),
+    "PostgresSink": ("pipelinekit.destinations.postgres", ".[postgres]", ("psycopg",)),
+    "S3Sink": ("pipelinekit.destinations.s3", ".[s3]", ("boto3", "botocore")),
 }
 
 __all__ = list(_DESTINATION_IMPORTS)

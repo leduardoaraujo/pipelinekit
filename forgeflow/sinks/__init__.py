@@ -1,12 +1,12 @@
 from importlib import import_module
 
 _SINK_IMPORTS = {
-    "BigQuerySink": ("forgeflow.sinks.bigquery", ".[bigquery]", ("google",)),
-    "DuckDBSink": ("forgeflow.sinks.duckdb", ".[duckdb]", ("duckdb",)),
-    "FileSink": ("forgeflow.sinks.file", None, ()),
-    "MongoDBSink": ("forgeflow.sinks.mongodb", ".[mongodb]", ("motor", "pymongo")),
-    "PostgresSink": ("forgeflow.sinks.postgres", ".[postgres]", ("psycopg",)),
-    "S3Sink": ("forgeflow.sinks.s3", ".[s3]", ("boto3", "botocore")),
+    "BigQuerySink": ("pipelinekit.destinations.bigquery", ".[bigquery]", ("google",)),
+    "DuckDBSink": ("pipelinekit.destinations.duckdb", ".[duckdb]", ("duckdb",)),
+    "FileSink": ("pipelinekit.destinations.file", None, ()),
+    "MongoDBSink": ("pipelinekit.destinations.mongodb", ".[mongodb]", ("motor", "pymongo")),
+    "PostgresSink": ("pipelinekit.destinations.postgres", ".[postgres]", ("psycopg",)),
+    "S3Sink": ("pipelinekit.destinations.s3", ".[s3]", ("boto3", "botocore")),
 }
 
 __all__ = list(_SINK_IMPORTS)

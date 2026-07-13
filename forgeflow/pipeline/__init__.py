@@ -1,9 +1,9 @@
 from importlib import import_module
 
 _PIPELINE_IMPORTS = {
-    "Pipeline": "forgeflow.pipeline.executor",
-    "PipelineExecutor": "forgeflow.pipeline.executor",
-    "PipelineLoader": "forgeflow.config.loader",
+    "Pipeline": "pipelinekit.pipeline.executor",
+    "PipelineExecutor": "pipelinekit.pipeline.executor",
+    "PipelineLoader": "pipelinekit.config.loader",
 }
 
 __all__ = list(_PIPELINE_IMPORTS)

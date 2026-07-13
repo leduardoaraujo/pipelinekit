@@ -1,3 +1,3 @@
-from forgeflow.config.loader import PipelineLoader
+from pipelinekit.config.loader import PipelineLoader
 
 __all__ = ["PipelineLoader"]

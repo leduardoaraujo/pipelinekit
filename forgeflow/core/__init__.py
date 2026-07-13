@@ -1,6 +1,6 @@
-from forgeflow.core.connector import BaseConnector
-from forgeflow.core.sink import BaseSink
-from forgeflow.core.transformer import BaseTransformer
+from pipelinekit.core.connector import BaseConnector
+from pipelinekit.core.sink import BaseSink
+from pipelinekit.core.transformer import BaseTransformer
 
 Source = BaseConnector
 Transform = BaseTransformer

@@ -16,11 +16,11 @@ Example:
 from importlib import import_module
 
 _AIRFLOW_IMPORTS = {
-    "ForgeFlowConnectionSensor": ("forgeflow.airflow.sensors", ("airflow",)),
-    "ForgeFlowHook": ("forgeflow.airflow.hooks", ("airflow",)),
-    "ForgeFlowOperator": ("forgeflow.airflow.operators", ("airflow",)),
-    "ForgeFlowSensor": ("forgeflow.airflow.sensors", ("airflow",)),
-    "ForgeFlowValidateOperator": ("forgeflow.airflow.operators", ("airflow",)),
+    "ForgeFlowConnectionSensor": ("pipelinekit.integrations.airflow.sensors", ("airflow",)),
+    "ForgeFlowHook": ("pipelinekit.integrations.airflow.hooks", ("airflow",)),
+    "ForgeFlowOperator": ("pipelinekit.integrations.airflow.operators", ("airflow",)),
+    "ForgeFlowSensor": ("pipelinekit.integrations.airflow.sensors", ("airflow",)),
+    "ForgeFlowValidateOperator": ("pipelinekit.integrations.airflow.operators", ("airflow",)),
 }
 
 __all__ = list(_AIRFLOW_IMPORTS)

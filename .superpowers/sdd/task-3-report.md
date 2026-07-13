@@ -89,4 +89,50 @@ Result:
 
 - The repository `.gitignore` pattern ignores `test_*.py`, so `tests/test_pipelinekit_namespace.py` must be force-added when staging the commit.
 - The repo virtualenv did not include the `build` module initially; I installed it locally in `.venv` so the required `python -m build` validation could run.
-- Documentation and broader user-facing copy still contain ForgeFlow references outside this task’s required namespace/metadata surface; I left that for later migration tasks rather than broadening Task 3.
+- Documentation and broader user-facing copy still contain ForgeFlow references outside this task's required namespace/metadata surface; I left that for later migration tasks rather than broadening Task 3.
+
+## Review fix follow-up
+
+- Stopped the broader revalidation pass at user request after completing the compatibility wrapper and packaging follow-up.
+- Rebuilt the wheel after adding explicit Hatch packaging for both `pipelinekit` and `forgeflow`.
+
+```powershell
+Remove-Item -Recurse -Force dist\*
+.\.venv\Scripts\python -m build --wheel --outdir dist
+```
+
+Result:
+
+- `Successfully built pipelinekit-0.2.0-py3-none-any.whl`
+
+```powershell
+python - <<'PY'
+import pathlib, zipfile
+root = pathlib.Path("dist")
+wheel = sorted(root.glob("pipelinekit-0.2.0-*.whl"))[-1]
+with zipfile.ZipFile(wheel) as zf:
+    names = set(zf.namelist())
+    print(wheel.name)
+    print("forgeflow/__init__.py" in names)
+    for name in sorted(n for n in names if n.startswith("forgeflow/") and n.endswith("__init__.py")):
+        print(name)
+PY
+```
+
+Result:
+
+- `pipelinekit-0.2.0-py3-none-any.whl`
+- `True`
+- `forgeflow/__init__.py`
+- `forgeflow/airflow/__init__.py`
+- `forgeflow/api/__init__.py`
+- `forgeflow/cli/__init__.py`
+- `forgeflow/config/__init__.py`
+- `forgeflow/connectors/__init__.py`
+- `forgeflow/core/__init__.py`
+- `forgeflow/destinations/__init__.py`
+- `forgeflow/pipeline/__init__.py`
+- `forgeflow/sinks/__init__.py`
+- `forgeflow/sources/__init__.py`
+- `forgeflow/transformers/__init__.py`
+- `forgeflow/transforms/__init__.py`
