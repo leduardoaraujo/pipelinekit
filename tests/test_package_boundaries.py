@@ -15,6 +15,13 @@ from forgeflow.sources import HttpConnector, RestConnector
 from forgeflow.transforms import FilterTransformer, JsonNormalizer, SchemaMapper
 
 
+def _dependency_available(module_name: str) -> bool:
+    try:
+        return importlib.util.find_spec(module_name) is not None
+    except ModuleNotFoundError:
+        return False
+
+
 def test_core_exports_domain_aliases():
     assert Source is BaseConnector
     assert Transform is BaseTransformer
@@ -58,7 +65,7 @@ def test_optional_destinations_remain_lazy_without_optional_cloud_extras():
 
     assert sinks.FileSink is FileSink
 
-    if importlib.util.find_spec("google.cloud.bigquery") is not None:
+    if _dependency_available("google.cloud.bigquery"):
         pytest.skip("google.cloud.bigquery is installed in this environment")
 
     with pytest.raises(ImportError, match='Install with: pip install -e "\\.\\[bigquery\\]"'):

@@ -1,12 +1,12 @@
+import importlib.util
 import json
 import subprocess
 import sys
 import textwrap
 
+import pytest
 from click.testing import CliRunner
 
-from forgeflow.api.main import app as legacy_app
-from pipelinekit.api import app as canonical_app
 from pipelinekit.cli.main import cli
 from pipelinekit.config.loader import PipelineLoader
 
@@ -48,7 +48,16 @@ def test_pipeline_loader_reads_yaml(tmp_path):
     PipelineLoader.validate_pipeline(pipelines[0])
 
 
-def test_pipelinekit_api_package_exports_canonical_app():
+def test_api_compatibility_package_exports_canonical_app():
+    if (
+        importlib.util.find_spec("fastapi") is None
+        or importlib.util.find_spec("pydantic") is None
+    ):
+        pytest.skip("PipelineKit API extra is not installed in this environment")
+
+    from forgeflow.api.main import app as legacy_app
+    from pipelinekit.api import app as canonical_app
+
     assert canonical_app is legacy_app
 
 

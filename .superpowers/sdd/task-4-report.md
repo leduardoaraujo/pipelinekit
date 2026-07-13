@@ -172,3 +172,36 @@ C:\Users\luiz.araujo\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12
 ```
 
 Known unrelated failure retained as requested: `tests/test_jsonplaceholder_api.py::test_jsonplaceholder_api` still fails because async tests are collected without an async pytest plugin.
+
+## Follow-up fix
+
+To satisfy the Task 4 review finding, `tests/test_pipelinekit_cli.py` no longer imports `pipelinekit.api` or `forgeflow.api` at module scope. The API compatibility check now imports both symbols inside the test body and skips only that test when `fastapi` or `pydantic` are unavailable.
+
+I also renamed the baseline test to make its intent clearer and hardened `tests/test_package_boundaries.py` so it does not raise `ModuleNotFoundError` when `google` is absent.
+
+### Focused verification rerun
+
+Command:
+
+```powershell
+.\.venv\Scripts\python -m pytest tests/test_pipelinekit_cli.py tests/test_package_baseline.py tests/test_package_boundaries.py -q
+```
+
+Output:
+
+```text
+..s....................                                                  [100%]
+22 passed, 1 skipped in 1.93s
+```
+
+Command:
+
+```powershell
+.\.venv\Scripts\python -m ruff check tests/test_pipelinekit_cli.py tests/test_package_baseline.py
+```
+
+Output:
+
+```text
+All checks passed!
+```

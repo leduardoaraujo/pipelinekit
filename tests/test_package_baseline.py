@@ -13,7 +13,7 @@ def _dependency_available(module_name: str) -> bool:
         return False
 
 
-def test_forgeflow_package_baseline():
+def test_forgeflow_wrapper_package_baseline():
     import forgeflow
 
     assert forgeflow.__version__ == "0.2.0"
