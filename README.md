@@ -1,6 +1,4 @@
 <div align="center">
-  <img src="docs/assets/logo_forgeflow.svg" alt="PipelineKit logo" width="400"/>
-
   # PipelineKit
 
   Python library for building data pipelines.
