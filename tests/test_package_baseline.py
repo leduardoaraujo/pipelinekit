@@ -75,7 +75,7 @@ def test_optional_components_fail_lazily(
             "forgeflow.sinks",
             "BigQuerySink",
             "forgeflow.sinks.bigquery",
-            "google.cloud.bigquery",
+            "google",
             'BigQuerySink requires optional dependencies. Install with: pip install -e ".[bigquery]"',
         ),
         (

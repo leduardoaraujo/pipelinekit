@@ -218,3 +218,23 @@ Focused command rerun:
 Exact result:
 
 - `21 passed in 0.44s`
+
+### Task 1 review follow-up: BigQuery namespace handling
+
+Applied the remaining review fix without changing any unrelated work.
+
+- Tightened `forgeflow/sinks/__init__.py` so `BigQuerySink` guidance is triggered by the real missing namespace case, `ModuleNotFoundError: No module named 'google'`.
+- Kept unrelated nested `ModuleNotFoundError` exceptions from inside `forgeflow.sinks.bigquery` propagating instead of being rewritten as optional-install guidance.
+- Updated `tests/test_package_baseline.py` to cover the real missing `google` namespace case while preserving nested-error propagation coverage.
+
+Focused command rerun:
+
+```bash
+.\.venv\Scripts\python -m pytest tests/test_package_baseline.py tests/test_pipeline_loader.py tests/test_transformers.py -q
+.\.venv\Scripts\ruff check forgeflow/sinks/__init__.py forgeflow/airflow/__init__.py tests/test_package_baseline.py
+```
+
+Exact result:
+
+- `21 passed in 0.48s`
+- `All checks passed!`

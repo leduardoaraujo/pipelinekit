@@ -4,7 +4,7 @@ _SINK_IMPORTS = {
     "BigQuerySink": (
         "forgeflow.sinks.bigquery",
         ".[bigquery]",
-        ("google.cloud", "google.api_core"),
+        ("google",),
     ),
     "DuckDBSink": ("forgeflow.sinks.duckdb", ".[duckdb]", ("duckdb",)),
     "FileSink": ("forgeflow.sinks.file", None, ()),
@@ -43,7 +43,4 @@ def _is_optional_dependency_error(
     if error.name == module_name:
         return True
 
-    return any(
-        error.name == dependency or error.name.startswith(f"{dependency}.")
-        for dependency in missing_dependencies
-    )
+    return any(error.name == dependency for dependency in missing_dependencies)
