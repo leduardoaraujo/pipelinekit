@@ -1,3 +1,5 @@
+import pytest
+
 from forgeflow.core import (
     BaseConnector,
     BaseSink,
@@ -27,3 +29,32 @@ def test_domain_packages_export_existing_components():
     assert JsonNormalizer is not None
     assert FilterTransformer is not None
     assert SchemaMapper is not None
+
+
+def test_legacy_wrapper_packages_export_domain_components():
+    from forgeflow import connectors, sinks, transformers
+    from forgeflow.destinations import FileSink
+
+    assert connectors.HttpConnector is HttpConnector
+    assert connectors.RestConnector is RestConnector
+    assert transformers.JsonNormalizer is JsonNormalizer
+    assert transformers.FilterTransformer is FilterTransformer
+    assert transformers.SchemaMapper is SchemaMapper
+    assert sinks.FileSink is FileSink
+
+
+def test_legacy_pipeline_loader_wrapper_exports_config_loader():
+    from forgeflow.config import PipelineLoader
+    from forgeflow.pipeline.loader import PipelineLoader as LegacyPipelineLoader
+
+    assert LegacyPipelineLoader is PipelineLoader
+
+
+def test_optional_destinations_remain_lazy_without_optional_cloud_extras():
+    from forgeflow import sinks
+    from forgeflow.destinations import FileSink
+
+    assert sinks.FileSink is FileSink
+
+    with pytest.raises(ImportError, match='Install with: pip install -e "\\.\\[bigquery\\]"'):
+        sinks.BigQuerySink
