@@ -1,22 +1,19 @@
-class ForgeFlowException(Exception):
-    pass
+"""Compatibility wrapper for pipelinekit.core.exceptions."""
 
+from pipelinekit.core.exceptions import (
+    ConfigurationException,
+    ConnectorException,
+    ForgeFlowException,
+    PipelineException,
+    SinkException,
+    TransformerException,
+)
 
-class ConnectorException(ForgeFlowException):
-    pass
-
-
-class TransformerException(ForgeFlowException):
-    pass
-
-
-class SinkException(ForgeFlowException):
-    pass
-
-
-class ConfigurationException(ForgeFlowException):
-    pass
-
-
-class PipelineException(ForgeFlowException):
-    pass
+__all__ = [
+    "ForgeFlowException",
+    "ConnectorException",
+    "TransformerException",
+    "SinkException",
+    "ConfigurationException",
+    "PipelineException",
+]

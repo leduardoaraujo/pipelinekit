@@ -136,3 +136,93 @@ Result:
 - `forgeflow/sources/__init__.py`
 - `forgeflow/transformers/__init__.py`
 - `forgeflow/transforms/__init__.py`
+
+## Legacy compatibility wrapper completion
+
+- Replaced every remaining `forgeflow` module with a corresponding `pipelinekit` compatibility wrapper where a canonical module exists.
+- Preserved the existing package-level lazy `__getattr__` wrappers in `forgeflow.pipeline`, `forgeflow.destinations`, `forgeflow.sinks`, and `forgeflow.airflow`.
+- Extended `tests/test_pipelinekit_namespace.py` with representative deep legacy import identity checks for CLI, executor, transformer, and destination wrappers.
+
+```powershell
+$all = rg --files forgeflow -g '*.py'
+$hits = rg -l 'pipelinekit' forgeflow -g '*.py'
+Compare-Object -ReferenceObject $all -DifferenceObject $hits | Where-Object { $_.SideIndicator -eq '<=' } | ForEach-Object { $_.InputObject }
+```
+
+Result:
+
+- no output
+
+```powershell
+.\.venv\Scripts\python -m pytest tests\test_pipelinekit_namespace.py -v
+```
+
+Result:
+
+- `8 passed`
+
+```powershell
+if (Test-Path dist) { Remove-Item -Recurse -Force dist }
+.\.venv\Scripts\python -m build
+```
+
+Result:
+
+- `Successfully built pipelinekit-0.2.0.tar.gz and pipelinekit-0.2.0-py3-none-any.whl`
+
+```powershell
+@'
+import pathlib, tarfile, zipfile
+root = pathlib.Path(r'C:\Temp\pipelinekit-reorg\dist')
+sdist = root / 'pipelinekit-0.2.0.tar.gz'
+wheel = root / 'pipelinekit-0.2.0-py3-none-any.whl'
+with tarfile.open(sdist, 'r:gz') as tf:
+    sdist_has = any(name.endswith('forgeflow/__init__.py') for name in tf.getnames())
+with zipfile.ZipFile(wheel) as zf:
+    wheel_has = 'forgeflow/__init__.py' in zf.namelist()
+print(f'sdist={sdist.name}')
+print(f'sdist_has_forgeflow_init={sdist_has}')
+print(f'wheel={wheel.name}')
+print(f'wheel_has_forgeflow_init={wheel_has}')
+'@ | .\.venv\Scripts\python -
+```
+
+Result:
+
+- `sdist=pipelinekit-0.2.0.tar.gz`
+- `sdist_has_forgeflow_init=True`
+- `wheel=pipelinekit-0.2.0-py3-none-any.whl`
+- `wheel_has_forgeflow_init=True`
+
+```powershell
+$checkDir = Join-Path $env:TEMP 'pipelinekit-task3-wheel-check'
+if (Test-Path $checkDir) { Remove-Item -Recurse -Force $checkDir }
+python -m venv $checkDir
+& "$checkDir\Scripts\python.exe" -m pip install 'C:\Temp\pipelinekit-reorg\dist\pipelinekit-0.2.0-py3-none-any.whl'
+@'
+import forgeflow, pipelinekit
+from forgeflow.cli.main import cli as legacy_cli
+from pipelinekit.cli.main import cli as canonical_cli
+from forgeflow.pipeline.executor import PipelineExecutor as legacy_executor
+from pipelinekit.pipeline.executor import PipelineExecutor as canonical_executor
+from forgeflow.transforms.filter import FilterTransformer as legacy_transformer
+from pipelinekit.transforms.filter import FilterTransformer as canonical_transformer
+from forgeflow.destinations.file import FileSink as legacy_destination
+from pipelinekit.destinations.file import FileSink as canonical_destination
+print(f'pipelinekit_version={pipelinekit.__version__}')
+print(f'forgeflow_version={forgeflow.__version__}')
+print(f'cli_identity={legacy_cli is canonical_cli}')
+print(f'executor_identity={legacy_executor is canonical_executor}')
+print(f'transformer_identity={legacy_transformer is canonical_transformer}')
+print(f'destination_identity={legacy_destination is canonical_destination}')
+'@ | & "$checkDir\Scripts\python.exe" -
+```
+
+Result:
+
+- `pipelinekit_version=0.2.0`
+- `forgeflow_version=0.2.0`
+- `cli_identity=True`
+- `executor_identity=True`
+- `transformer_identity=True`
+- `destination_identity=True`

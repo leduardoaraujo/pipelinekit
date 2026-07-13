@@ -1,11 +1,5 @@
-from abc import ABC, abstractmethod
-from typing import Any
+"""Compatibility wrapper for pipelinekit.core.transformer."""
 
+from pipelinekit.core.transformer import BaseTransformer
 
-class BaseTransformer(ABC):
-    def __init__(self, config: dict[str, Any] | None = None):
-        self.config = config or {}
-
-    @abstractmethod
-    def transform(self, data: Any) -> dict[str, Any]:
-        pass
+__all__ = ["BaseTransformer"]
