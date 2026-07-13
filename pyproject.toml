@@ -1,6 +1,6 @@
 [project]
-name = "forgeflow"
-version = "0.1.0"
+name = "pipelinekit"
+version = "0.2.0"
 description = "Modern ETL framework for API ingestion, data transformation, and distribution with optional API and Airflow integrations"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -43,10 +43,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/leduardoaraujo/forgeflow"
-Documentation = "https://forgeflow.readthedocs.io"
-Repository = "https://github.com/leduardoaraujo/forgeflow"
-Issues = "https://github.com/leduardoaraujo/forgeflow/issues"
+Homepage = "https://github.com/leduardoaraujo/pipelinekit"
+Documentation = "https://pipelinekit.readthedocs.io"
+Repository = "https://github.com/leduardoaraujo/pipelinekit"
+Issues = "https://github.com/leduardoaraujo/pipelinekit/issues"
 
 [project.optional-dependencies]
 # Core extras
@@ -96,11 +96,22 @@ dev = [
 
 # All extras combined
 all = [
-    "forgeflow[postgres,duckdb,bigquery,s3,mongodb,snowflake,api,airflow]",
+    "psycopg[binary]>=3.2.0",
+    "duckdb>=1.1.0",
+    "google-cloud-bigquery>=3.26.0",
+    "pandas>=2.2.0",
+    "boto3>=1.34.0",
+    "s3fs>=2024.2.0",
+    "motor>=3.3.0",
+    "pymongo>=4.6.0",
+    "snowflake-connector-python>=3.7.0",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "apache-airflow>=2.8.0",
 ]
 
 [project.scripts]
-forgeflow = "forgeflow.cli.main:cli"
+pipelinekit = "pipelinekit.cli.main:cli"
 
 [build-system]
 requires = ["hatchling"]
