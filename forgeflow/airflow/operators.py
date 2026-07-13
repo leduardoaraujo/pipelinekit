@@ -1,6 +1,6 @@
 """Airflow operators for ForgeFlow integration."""
 
-from typing import Any, Optional
+from typing import Any
 
 import structlog
 
@@ -10,7 +10,7 @@ try:
 except ImportError:
     raise ImportError(
         "Apache Airflow is required for this module. "
-        "Install with: pip install data-forge[airflow]"
+        'Install with: pip install -e ".[airflow]"'
     )
 
 from forgeflow.airflow.hooks import ForgeFlowHook
@@ -60,7 +60,7 @@ class ForgeFlowOperator(BaseOperator):
         self.push_to_xcom = push_to_xcom
         self.validate_before_run = validate_before_run
 
-    def execute(self, context: dict[str, Any]) -> Optional[dict[str, Any]]:
+    def execute(self, context: dict[str, Any]) -> dict[str, Any] | None:
         """Execute the ForgeFlow pipeline.
 
         Args:
@@ -112,7 +112,7 @@ class ForgeFlowValidateOperator(BaseOperator):
     @apply_defaults
     def __init__(
         self,
-        pipeline_name: Optional[str] = None,
+        pipeline_name: str | None = None,
         config_path: str = "config/pipelines.yaml",
         *args,
         **kwargs,

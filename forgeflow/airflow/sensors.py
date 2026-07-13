@@ -8,7 +8,7 @@ try:
 except ImportError:
     raise ImportError(
         "Apache Airflow is required for this module. "
-        "Install with: pip install data-forge[airflow]"
+        'Install with: pip install -e ".[airflow]"'
     )
 
 from forgeflow.airflow.hooks import ForgeFlowHook

@@ -1,7 +1,7 @@
 [project]
 name = "forgeflow"
 version = "0.1.0"
-description = "Modern ETL framework for API ingestion, data transformation, and distribution with Airflow integration"
+description = "Modern ETL framework for API ingestion, data transformation, and distribution with optional API and Airflow integrations"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {file = "LICENSE"}

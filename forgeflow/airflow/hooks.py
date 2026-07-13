@@ -1,7 +1,7 @@
 """Airflow hooks for ForgeFlow integration."""
 
 import asyncio
-from typing import Any, Optional
+from typing import Any
 
 import structlog
 
@@ -10,7 +10,7 @@ try:
 except ImportError:
     raise ImportError(
         "Apache Airflow is required for this module. "
-        "Install with: pip install data-forge[airflow]"
+        'Install with: pip install -e ".[airflow]"'
     )
 
 from forgeflow.pipeline.executor import PipelineExecutor
@@ -36,7 +36,7 @@ class ForgeFlowHook(BaseHook):
     def __init__(self, config_path: str = "config/pipelines.yaml"):
         super().__init__()
         self.config_path = config_path
-        self._pipelines: Optional[list] = None
+        self._pipelines: list | None = None
 
     def get_conn(self) -> PipelineExecutor:
         """Return a PipelineExecutor instance.

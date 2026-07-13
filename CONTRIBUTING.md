@@ -11,15 +11,15 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/data-forge.git
-cd data-forge
+git clone https://github.com/leduardoaraujo/forgeflow.git
+cd forgeflow
 
 # Create virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
-pip install -r requirements-dev.txt
+pip install -e ".[dev]"
 
 # Install pre-commit hooks
 pre-commit install

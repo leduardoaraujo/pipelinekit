@@ -12,13 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Kafka connector
 - WebSocket connector
 - gRPC connector
-- Schema mapper transformer
 - Data aggregator transformer
 - Data deduplicator
 - Redis cache backend
-- MongoDB sink
-- BigQuery sink
-- S3 sink
 - Snowflake sink
 - Metrics and monitoring
 - Web dashboard
@@ -139,7 +135,6 @@ Initial release
 - GraphQL connector implementation
 - Kafka producer and consumer
 - WebSocket connector
-- Schema mapper transformer
 - Data aggregation transformer
 - Improved error handling
 - Performance optimizations
@@ -148,9 +143,6 @@ Initial release
 
 **Focus**: Cloud Integration
 
-- Full BigQuery sink implementation
-- S3 sink with multipart upload
-- MongoDB sink
 - Snowflake sink
 - Redis cache backend
 - Distributed rate limiting
@@ -195,5 +187,5 @@ To report security issues, see SECURITY.md
 
 ---
 
-[Unreleased]: https://github.com/yourusername/data-forge/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/yourusername/data-forge/releases/tag/v0.1.0
+[Unreleased]: https://github.com/leduardoaraujo/forgeflow/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/leduardoaraujo/forgeflow/releases/tag/v0.1.0

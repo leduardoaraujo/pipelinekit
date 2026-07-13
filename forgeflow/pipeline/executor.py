@@ -1,3 +1,5 @@
+from importlib import import_module
+
 import structlog
 
 from forgeflow.connectors import HttpConnector, RestConnector
@@ -5,7 +7,6 @@ from forgeflow.core.connector import BaseConnector
 from forgeflow.core.exceptions import PipelineException
 from forgeflow.core.sink import BaseSink
 from forgeflow.core.transformer import BaseTransformer
-from forgeflow.sinks import DuckDBSink, FileSink, PostgresSink
 from forgeflow.transformers import JsonNormalizer
 
 logger = structlog.get_logger()
@@ -22,9 +23,9 @@ class PipelineExecutor:
     }
 
     SINKS = {
-        "postgres": PostgresSink,
-        "duckdb": DuckDBSink,
-        "file": FileSink,
+        "postgres": "PostgresSink",
+        "duckdb": "DuckDBSink",
+        "file": "FileSink",
     }
 
     async def execute(self, pipeline: dict) -> None:
@@ -88,5 +89,6 @@ class PipelineExecutor:
         if not sink_type or sink_type not in self.SINKS:
             raise PipelineException(f"Unknown sink type: {sink_type}")
 
-        sink_class = self.SINKS[sink_type]
+        sink_class_name = self.SINKS[sink_type]
+        sink_class = getattr(import_module("forgeflow.sinks"), sink_class_name)
         return sink_class(config.get("config", {}))
