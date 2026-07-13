@@ -1,5 +1,5 @@
-"""CLI module for ForgeFlow."""
+"""Compatibility wrapper for pipelinekit.cli."""
 
-from forgeflow.cli.main import cli
+from pipelinekit.cli import cli
 
 __all__ = ["cli"]

@@ -10,7 +10,7 @@ try:
     from airflow import DAG
     from airflow.operators.python import PythonOperator
 except ImportError:
-    raise ImportError("Apache Airflow is required. Install with: pip install data-forge[airflow]")
+    raise ImportError('Apache Airflow is required. Install with: pip install -e ".[airflow]"')
 
 from forgeflow.airflow import ForgeFlowOperator, ForgeFlowSensor, ForgeFlowValidateOperator
 

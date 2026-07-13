@@ -54,7 +54,7 @@ pip install -e ".[api]"
 pip install -e ".[airflow]"
 
 # Development tools
-pip install -r requirements-dev.txt
+pip install -e ".[dev]"
 ```
 
 ## Quick Start
@@ -192,8 +192,7 @@ forgeflow/
 
 ```python
 from airflow import DAG
-from forgeflow.airflow.operators import ForgeFlowPipelineOperator
-from forgeflow.airflow.sensors import ForgeFlowApiSensor
+from forgeflow.airflow import ForgeFlowOperator, ForgeFlowSensor
 from datetime import datetime, timedelta
 
 default_args = {
@@ -210,13 +209,13 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    check_api = ForgeFlowApiSensor(
+    check_api = ForgeFlowSensor(
         task_id='check_api_availability',
         pipeline_name='api_to_duckdb',
         timeout=300,
     )
 
-    run_pipeline = ForgeFlowPipelineOperator(
+    run_pipeline = ForgeFlowOperator(
         task_id='ingest_data',
         pipeline_name='api_to_duckdb',
         config_path='config/pipelines.yaml',
@@ -370,7 +369,7 @@ pytest -v
 
 ```bash
 # Install development dependencies
-pip install -r requirements-dev.txt
+pip install -e ".[dev]"
 
 # Install pre-commit hooks
 pre-commit install
@@ -398,8 +397,7 @@ mypy forgeflow/
 Future planned features:
 
 - Additional connectors: GraphQL, Kafka, WebSocket, gRPC
-- Additional sinks: BigQuery, S3, MongoDB, Snowflake
-- Schema mapping transformer
+- Additional sinks: Snowflake
 - Data aggregation transformer
 - Redis cache backend
 - Metrics and monitoring

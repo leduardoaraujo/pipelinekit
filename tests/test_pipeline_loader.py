@@ -1,7 +1,7 @@
 import pytest
 
-from forgeflow.core.exceptions import ConfigurationException
-from forgeflow.pipeline.loader import PipelineLoader
+from pipelinekit.config import PipelineLoader
+from pipelinekit.core.exceptions import ConfigurationException
 
 
 def test_validate_pipeline_valid():
